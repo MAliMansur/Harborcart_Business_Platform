@@ -1,0 +1,97 @@
+Creating test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+Found 62 test(s).
+Operations to perform:
+  Synchronize unmigrated apps: messages, staticfiles
+  Apply all migrations: auth, commerce, contenttypes, sessions
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0001_initial... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying commerce.0001_initial... OK
+  Applying sessions.0001_initial...test_buyer_cannot_approve (commerce.tests.test_business.TransactionRules.test_buyer_cannot_approve) ... ok
+test_buyer_cannot_fulfill (commerce.tests.test_business.TransactionRules.test_buyer_cannot_fulfill) ... ok
+test_buyer_cannot_read_other_buyers_order (commerce.tests.test_business.TransactionRules.test_buyer_cannot_read_other_buyers_order) ... ok
+test_buyer_cannot_record_payment (commerce.tests.test_business.TransactionRules.test_buyer_cannot_record_payment) ... ok
+test_cancel_confirmed_voids_invoice_and_releases_commitments (commerce.tests.test_business.TransactionRules.test_cancel_confirmed_voids_invoice_and_releases_commitments) ... ok
+test_cannot_ship_before_pack (commerce.tests.test_business.TransactionRules.test_cannot_ship_before_pack) ... ok
+test_checkout_reserves_credit_stock_and_outbox (commerce.tests.test_business.TransactionRules.test_checkout_reserves_credit_stock_and_outbox) ... ok
+test_contract_discount_is_integer_and_rounded (commerce.tests.test_business.TransactionRules.test_contract_discount_is_integer_and_rounded) ... ok
+test_credit_limit_rejects_without_reserving_stock (commerce.tests.test_business.TransactionRules.test_credit_limit_rejects_without_reserving_stock) ... ok
+test_cross_tenant_finance_and_inventory_rejected (commerce.tests.test_business.TransactionRules.test_cross_tenant_finance_and_inventory_rejected) ... ok
+test_empty_cart_rejected (commerce.tests.test_business.TransactionRules.test_empty_cart_rejected) ... ok
+test_expired_order_cannot_be_approved (commerce.tests.test_business.TransactionRules.test_expired_order_cannot_be_approved) ... ok
+test_expiry_releases_stock_and_credit_once (commerce.tests.test_business.TransactionRules.test_expiry_releases_stock_and_credit_once) ... ok
+test_foreign_product_and_warehouse_rejected (commerce.tests.test_business.TransactionRules.test_foreign_product_and_warehouse_rejected) ... ok
+test_full_return_restock_refund_is_idempotent (commerce.tests.test_business.TransactionRules.test_full_return_restock_refund_is_idempotent) ... ok
+test_manager_cannot_self_approve (commerce.tests.test_business.TransactionRules.test_manager_cannot_self_approve) ... ok
+test_no_partial_checkout_when_stock_insufficient (commerce.tests.test_business.TransactionRules.test_no_partial_checkout_when_stock_insufficient) ... ok
+test_paid_order_cannot_be_cancelled (commerce.tests.test_business.TransactionRules.test_paid_order_cannot_be_cancelled) ... ok
+test_payment_reference_cannot_be_reused (commerce.tests.test_business.TransactionRules.test_payment_reference_cannot_be_reused) ... ok
+test_payment_releases_credit_once (commerce.tests.test_business.TransactionRules.test_payment_releases_credit_once) ... ok
+test_price_snapshot_survives_catalog_price_change (commerce.tests.test_business.TransactionRules.test_price_snapshot_survives_catalog_price_change) ... ok
+test_quantities_reject_bool_negative_and_fraction (commerce.tests.test_business.TransactionRules.test_quantities_reject_bool_negative_and_fraction) ... ok
+test_refund_before_warehouse_receipt_rejected (commerce.tests.test_business.TransactionRules.test_refund_before_warehouse_receipt_rejected) ... ok
+test_repeated_checkout_returns_same_order (commerce.tests.test_business.TransactionRules.test_repeated_checkout_returns_same_order) ... ok
+test_return_requires_paid_delivered_order (commerce.tests.test_business.TransactionRules.test_return_requires_paid_delivered_order) ... ok
+test_reused_key_with_different_payload_conflicts (commerce.tests.test_business.TransactionRules.test_reused_key_with_different_payload_conflicts) ... ok
+test_shipping_moves_stock_exactly_once (commerce.tests.test_business.TransactionRules.test_shipping_moves_stock_exactly_once) ... ok
+test_stale_cart_conflicts (commerce.tests.test_business.TransactionRules.test_stale_cart_conflicts) ... ok
+test_stock_adjustment_preserves_reservations (commerce.tests.test_business.TransactionRules.test_stock_adjustment_preserves_reservations) ... ok
+test_stock_adjustment_records_ledger (commerce.tests.test_business.TransactionRules.test_stock_adjustment_records_ledger) ... ok
+test_stock_constraint_prevents_overreservation (commerce.tests.test_business.TransactionRules.test_stock_constraint_prevents_overreservation) ... ok
+test_threshold_requires_approval (commerce.tests.test_business.TransactionRules.test_threshold_requires_approval) ... ok
+test_all_workspace_pages_render_for_operator (commerce.tests.test_business.WebSecurity.test_all_workspace_pages_render_for_operator) ... ok
+test_anonymous_api_is_401_and_html_redirects (commerce.tests.test_business.WebSecurity.test_anonymous_api_is_401_and_html_redirects) ... ok
+test_catalog_hides_foreign_products (commerce.tests.test_business.WebSecurity.test_catalog_hides_foreign_products) ... ok
+test_checkout_replay_over_http (commerce.tests.test_business.WebSecurity.test_checkout_replay_over_http) ... ok
+test_csrf_enforced_on_mutation (commerce.tests.test_business.WebSecurity.test_csrf_enforced_on_mutation) ... ok
+test_foreign_order_returns_404_in_html_and_api (commerce.tests.test_business.WebSecurity.test_foreign_order_returns_404_in_html_and_api) ... ok
+test_login_throttle (commerce.tests.test_business.WebSecurity.test_login_throttle) ... ok
+test_metrics_require_bearer_token (commerce.tests.test_business.WebSecurity.test_metrics_require_bearer_token) ... ok
+test_notification_cannot_be_read_by_foreign_user (commerce.tests.test_business.WebSecurity.test_notification_cannot_be_read_by_foreign_user) ... ok
+test_order_detail_renders_state_actions (commerce.tests.test_business.WebSecurity.test_order_detail_renders_state_actions) ... ok
+test_product_name_is_html_escaped (commerce.tests.test_business.WebSecurity.test_product_name_is_html_escaped) ... ok
+test_readiness_reports_database_failure (commerce.tests.test_business.WebSecurity.test_readiness_reports_database_failure) ... ok
+test_restricted_pages_return_403_not_500 (commerce.tests.test_business.WebSecurity.test_restricted_pages_return_403_not_500) ... ok
+test_security_headers_present (commerce.tests.test_business.WebSecurity.test_security_headers_present) ... ok
+test_unknown_fields_do_not_allow_price_tampering (commerce.tests.test_business.WebSecurity.test_unknown_fields_do_not_allow_price_tampering) ... ok
+test_cancelled_order_is_not_invoiced (commerce.tests.test_business.WorkerRules.test_cancelled_order_is_not_invoiced) ... ok
+test_claim_has_exclusive_lease (commerce.tests.test_business.WorkerRules.test_claim_has_exclusive_lease) ... ok
+test_completed_job_reprocessing_creates_no_duplicate_effects (commerce.tests.test_business.WorkerRules.test_completed_job_reprocessing_creates_no_duplicate_effects) ... ok
+test_dead_letter_and_authorized_replay_recover (commerce.tests.test_business.WorkerRules.test_dead_letter_and_authorized_replay_recover) ... {"event": "job_failed", "job_id": "fe0918f9-4398-4cd1-8f49-16761ee116ed", "attempt": 1, "status": "retry", "error": "RuntimeError"}
+{"event": "job_failed", "job_id": "fe0918f9-4398-4cd1-8f49-16761ee116ed", "attempt": 2, "status": "dead", "error": "RuntimeError"}
+ok
+test_expired_lease_recovery_rejects_old_owner (commerce.tests.test_business.WorkerRules.test_expired_lease_recovery_rejects_old_owner) ... ok
+test_expired_order_is_released_not_invoiced (commerce.tests.test_business.WorkerRules.test_expired_order_is_released_not_invoiced) ... ok
+test_failure_rolls_back_effects_and_schedules_retry (commerce.tests.test_business.WorkerRules.test_failure_rolls_back_effects_and_schedules_retry) ... {"event": "job_failed", "job_id": "cf4936b2-de82-43dc-9700-6f84f7a432ae", "attempt": 1, "status": "retry", "error": "RuntimeError"}
+ok
+test_incident_injection_refused_in_production (commerce.tests.test_business.WorkerRules.test_incident_injection_refused_in_production) ... ok
+test_reconciliation_detects_credit_drift (commerce.tests.test_business.WorkerRules.test_reconciliation_detects_credit_drift) ... ok
+test_reconciliation_passes_for_business_workflow (commerce.tests.test_business.WorkerRules.test_reconciliation_passes_for_business_workflow) ... ok
+test_worker_creates_invoice_and_notification (commerce.tests.test_business.WorkerRules.test_worker_creates_invoice_and_notification) ... ok
+test_wrong_ownership_token_cannot_commit (commerce.tests.test_business.WorkerRules.test_wrong_ownership_token_cannot_commit) ... ok
+test_competing_checkout_cannot_oversell_last_unit (commerce.tests.test_postgres.PostgreSQLConcurrency.test_competing_checkout_cannot_oversell_last_unit) ... skipped 'PostgreSQL required for row-lock concurrency tests'
+test_competing_workers_do_not_duplicate_invoice (commerce.tests.test_postgres.PostgreSQLConcurrency.test_competing_workers_do_not_duplicate_invoice) ... skipped 'PostgreSQL required for row-lock concurrency tests'
+test_concurrent_same_key_commits_one_order (commerce.tests.test_postgres.PostgreSQLConcurrency.test_concurrent_same_key_commits_one_order) ... skipped 'PostgreSQL required for row-lock concurrency tests'
+
+----------------------------------------------------------------------
+Ran 62 tests in 8.553s
+
+OK (skipped=3)
+Destroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+ OK
+System check identified no issues (0 silenced).

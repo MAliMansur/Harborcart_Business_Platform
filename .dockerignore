@@ -1,0 +1,9 @@
+.venv
+.local
+.env
+.git
+.static
+__pycache__
+*.pyc
+evidence
+legacy

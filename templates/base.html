@@ -1,0 +1,29 @@
+{% load static %}
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{ title|default:"Workspace" }} · HarborCart</title><link rel="stylesheet" href="{% static 'app.css' %}">
+<script defer src="{% static 'app.js' %}"></script></head>
+<body><a class="skip" href="#main">Skip to content</a>
+{% if user.is_authenticated and membership %}
+<div class="shell"><aside class="sidebar">
+<a class="brand" href="/"><span class="brand-mark">H</span><span>HarborCart<small>BUSINESS OPERATIONS</small></span></a>
+<div class="workspace"><span class="avatar">{{ company.name|slice:":2"|upper }}</span><div>{{ company.name }}<small>Contract commerce workspace</small></div></div>
+<nav aria-label="Primary"><span class="nav-label">WORKSPACE</span>
+<a class="{% if page == 'dashboard' %}active{% endif %}" href="/">Overview</a>
+<a class="{% if page == 'catalog' %}active{% endif %}" href="/catalog/">Product catalog</a>
+<a class="{% if page == 'orders' %}active{% endif %}" href="/orders/">Orders</a>
+{% if membership.role == 'approver' or membership.role == 'admin' %}<a class="{% if page == 'approvals' %}active{% endif %}" href="/approvals/">Purchasing approvals</a>{% endif %}
+{% if membership.role == 'warehouse' or membership.role == 'admin' %}<span class="nav-label">SUPPLY CHAIN</span>
+<a class="{% if page == 'fulfillment' %}active{% endif %}" href="/fulfillment/">Fulfillment desk</a>
+<a class="{% if page == 'inventory' %}active{% endif %}" href="/inventory/">Inventory control</a>{% endif %}
+<a class="{% if page == 'returns' %}active{% endif %}" href="/returns/">Returns and refunds</a>
+{% if membership.role == 'finance' or membership.role == 'admin' %}<a class="{% if page == 'finance' %}active{% endif %}" href="/finance/">Finance desk</a>{% endif %}
+<span class="nav-label">ACTIVITY</span><a class="{% if page == 'notifications' %}active{% endif %}" href="/notifications/">Notifications <span class="count">{{ unread_notifications }}</span></a>
+{% if membership.role == 'admin' or membership.role == 'finance' or membership.role == 'approver' %}<a class="{% if page == 'audit' %}active{% endif %}" href="/audit/">Audit trail</a>{% endif %}
+{% if membership.role == 'admin' %}<a class="{% if page == 'operations' %}active{% endif %}" href="/operations/">Operations center</a>{% endif %}</nav>
+<div class="sidebar-footer"><span class="env-dot"></span> Training workspace<small>Fictional customers · USD</small></div>
+</aside><div class="main-shell"><header class="topbar"><span>Commerce / {{ title }}</span><div class="identity"><span>{{ user.username }}<small>{{ membership.get_role_display }}</small></span><form method="post" action="/logout/">{% csrf_token %}<button class="text-button" type="submit">Sign out</button></form></div></header>
+<main id="main"><div class="page-heading"><div><p class="eyebrow">HARBORCART BUSINESS</p><h1>{{ title }}</h1></div>{% block heading_action %}{% endblock %}</div>
+<div id="notice" role="status" aria-live="polite" hidden></div>{% block content %}{% endblock %}</main>
+<footer>Local business simulation. Payment and shipment records do not move money or contact carriers.</footer></div></div>
+{% else %}<main id="main" class="public-main">{% block public %}{% endblock %}</main>{% endif %}
+</body></html>

@@ -1,0 +1,13 @@
+.venv/
+.local/
+.env
+__pycache__/
+*.pyc
+.static/
+.coverage
+*.sqlite3*
+*.tfstate*
+*.tfplan
+.terraform/
+*.pem
+*.key

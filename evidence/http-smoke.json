@@ -1,0 +1,47 @@
+{
+  "timestamp": "2026-10-27T01:05:14.370821+00:00",
+  "passed": true,
+  "transport": "real HTTP via loopback Gunicorn",
+  "database": "temporary SQLite",
+  "journey": "checkout -> approval -> worker invoice -> pack -> ship -> deliver -> payment -> return -> restock -> refund",
+  "checks": [
+    "cookie login for 6 roles",
+    "CSRF-protected mutations",
+    "checkout replay",
+    "tenant 404",
+    "role 403",
+    "metrics authentication",
+    "static CSS",
+    "11 workspace pages",
+    "business reconciliation",
+    "HC-01 failed attempt and repair/replay",
+    "SQLite backup/restore integrity and counts",
+    "restored business reconciliation"
+  ],
+  "recovery_evidence": {
+    "environment": "local-sqlite",
+    "timestamp": "2026-10-27T01:05:13.257558+00:00",
+    "backup": "20261027T010513Z-7ab7f7-backup.sqlite3",
+    "restored": "20261027T010513Z-7ab7f7-restored.sqlite3",
+    "integrity": "ok",
+    "foreign_key_violations": 0,
+    "table_counts": {
+      "commerce_company": 2,
+      "commerce_order": 12,
+      "commerce_orderitem": 12,
+      "commerce_invoice": 11,
+      "commerce_stock": 33,
+      "commerce_payment": 4,
+      "commerce_refund": 2,
+      "commerce_outboxevent": 26,
+      "commerce_auditevent": 55
+    },
+    "counts_match": true,
+    "backup_sha256": "6ba6907e187f0fd9381caa32486cc5392b0a33d09f2f817e65a8fb078a202a9c",
+    "passed": true,
+    "live_database_replaced": false,
+    "postgresql_recovery_proven": false
+  },
+  "browser_javascript_executed": false,
+  "aws_calls": 0
+}

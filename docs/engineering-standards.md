@@ -1,0 +1,16 @@
+# Engineering standards
+- Develop on a short-lived branch. Changes need a problem statement, tests tied to business behavior, risk assessment, rollback plan and evidence.
+- Keep money in integer minor units. Never trust client-supplied prices, company IDs, totals or roles.
+- Put mutations in service transactions; maintain company/order/stock locking discipline. Add database constraints for invariants where expressible.
+- External network calls must not hold database locks. New integrations need idempotency, reconciliation and unknown-outcome handling.
+- Log request IDs, routes, statuses and durations. Do not log cookies, passwords, tokens, request bodies, addresses or payment-provider secrets.
+- Use supported branches and reviewed locked dependencies. Regenerate lock hashes during dependency updates, rerun tests and audit the resolved graph.
+- Build a container once; promote by digest. Pin third-party actions by reviewed commit SHA. Container tags here are review candidates until their digests and scans are recorded.
+- Separate migration and runtime database identities. Do not grant runtime superuser privileges to solve a failed deployment.
+- Use expand/contract changes. Back up before data changes and verify restoration independently. A backup file alone is not recovery evidence.
+- Production needs protected branches, required checks, required environment reviewers, restricted release actors and no self-approval. Repository YAML alone does not configure these protections.
+- Infrastructure changes require reviewed Terraform plans, state locking, drift detection, cost assessment, least-privilege identity and explicit approval for spending/destruction.
+- Never use a force-unlock or state edit until ownership of the active operation and the recovery plan are established.
+- Declare proposed targets separately from measured metrics. Treat unrun tests as unrun.
+- Keep individual incident notes, timelines, hypotheses, recovery validation and prevention work. Do not publish secrets or personal data in portfolio evidence.
+- This project is a personal engineering lab. Do not describe fictional customers, incidents or targets as paid employment or achieved commercial production results.

@@ -1,0 +1,22 @@
+{
+  "timestamp": "2026-10-27T01:11:10.929885+00:00",
+  "fresh_source_setup": true,
+  "commands": [
+    "make preflight bootstrap setup check",
+    "python manage.py reconcile"
+  ],
+  "exit_codes": [
+    0,
+    0
+  ],
+  "reconciliation": {
+    "companies_checked": 2,
+    "issues": [],
+    "passed": true
+  },
+  "local_secrets_generated": true,
+  "secrets_in_archive": false,
+  "docker_used": false,
+  "aws_calls": 0,
+  "dependency_note": "Reused isolated tested Python environment; requirements installation already performed during build."
+}

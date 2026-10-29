@@ -1,0 +1,43 @@
+name: Release review record
+on:
+  workflow_dispatch:
+    inputs:
+      image_digest:
+        description: "Candidate OCI digest, sha256: followed by 64 hex characters"
+        required: true
+      evidence_path:
+        description: "Committed production-readiness evidence file"
+        required: true
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with: {persist-credentials: false}
+      - name: Validate candidate and reviewed evidence
+        env:
+          CANDIDATE: ${{ inputs.image_digest }}
+          EVIDENCE_PATH: ${{ inputs.evidence_path }}
+        run: |
+          python3 - <<'PY'
+          import os, pathlib, re
+          root=pathlib.Path.cwd().resolve()
+          candidate=os.environ["CANDIDATE"]
+          evidence=(root/os.environ["EVIDENCE_PATH"]).resolve()
+          if not re.fullmatch(r"sha256:[0-9a-f]{64}",candidate):
+              raise SystemExit("Invalid OCI digest")
+          if not evidence.is_relative_to(root/"evidence") or not evidence.is_file():
+              raise SystemExit("A committed evidence file under evidence/ is required")
+          print("Candidate and evidence path validated; this is not deployment authorization.")
+          PY
+  review:
+    needs: validate
+    runs-on: ubuntu-24.04
+    environment: production
+    steps:
+      - name: Record review gate
+        run: echo "Review gate completed. Deployment remains a separate, explicitly authorized phase."
+# Configure production required reviewers + prevent self-review in repository settings.
+# YAML cannot create those protections. This workflow does not deploy or provision AWS.

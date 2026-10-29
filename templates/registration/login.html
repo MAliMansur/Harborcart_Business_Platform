@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block public %}<section class="login-layout"><div class="login-story"><div class="brand"><span class="brand-mark">H</span><span>HarborCart<small>BUSINESS OPERATIONS</small></span></div>
+<p class="eyebrow">FROM PURCHASE TO FULFILLMENT</p><h1>Every order.<br>Every handoff.<br>One workspace.</h1><p>Procurement, inventory and finance connected through a traceable order lifecycle.</p><div class="login-steps"><span>01 &nbsp; Purchase & approve</span><span>02 &nbsp; Reserve & fulfill</span><span>03 &nbsp; Reconcile & recover</span></div><small>Fictional business data • Local engineering lab</small></div>
+<div class="login-panel"><p class="eyebrow">WELCOME BACK</p><h2>Sign in to your workspace</h2><p class="muted">Use one of the local accounts generated during setup.</p>
+{% if throttled %}<div class="notice error">Too many attempts. Wait ten minutes before trying again.</div>{% elif form.errors %}<div class="notice error">Unable to sign in. Check your username and password.</div>{% endif %}
+<form method="post">{% csrf_token %}<label for="id_username">Username</label><input id="id_username" name="username" autocomplete="username" required maxlength="150" autofocus>
+<label for="id_password">Password</label><input id="id_password" name="password" type="password" autocomplete="current-password" required>
+<input type="hidden" name="next" value="{{ next }}"><button type="submit" class="primary full">Sign in</button></form>
+<p class="login-help">Your credentials are in <code>.local/demo-credentials.txt</code>. Choose buyer, manager, warehouse, finance or operator to work through different responsibilities.</p></div></section>{% endblock %}

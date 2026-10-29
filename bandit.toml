@@ -1,0 +1,3 @@
+[tool.bandit]
+# Tests intentionally contain test-only passwords and assertions.
+exclude_dirs = ["commerce/tests"]

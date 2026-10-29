@@ -1,0 +1,128 @@
+name: harborcart-business
+x-app: &app
+  build: .
+  image: harborcart-business:local
+  init: true
+  restart: unless-stopped
+  read_only: true
+  tmpfs: ["/tmp:size=64m,mode=1777"]
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+  mem_limit: 512m
+  cpus: 1.0
+  pids_limit: 128
+  environment: &app-env
+    HC_ENV: local
+    ENABLE_DEMO: "1"
+    DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?Run make bootstrap}
+    METRICS_TOKEN: ${METRICS_TOKEN:?Run make bootstrap}
+    DEMO_PASSWORD: ${DEMO_PASSWORD:?Run make bootstrap}
+    DATABASE_URL: postgresql://hc_app:${POSTGRES_APP_PASSWORD:?Run make bootstrap}@db:5432/harborcart
+    DB_SSLMODE: disable
+    ALLOWED_HOSTS: localhost,127.0.0.1,web,testserver
+    CSRF_TRUSTED_ORIGINS: http://localhost:8080,http://127.0.0.1:8080
+services:
+  db:
+    image: postgres:18.6-bookworm
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: harborcart
+      POSTGRES_USER: hc_owner
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run make bootstrap}
+      POSTGRES_APP_PASSWORD: ${POSTGRES_APP_PASSWORD:?Run make bootstrap}
+      POSTGRES_TEST_PASSWORD: ${POSTGRES_TEST_PASSWORD:?Run make bootstrap}
+    volumes:
+      - postgres-data:/var/lib/postgresql
+      - ./ops/postgres/init-roles.sh:/docker-entrypoint-initdb.d/10-roles.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U hc_owner -d harborcart"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+    shm_size: 128m
+    mem_limit: 768m
+    cpus: 1.0
+    pids_limit: 128
+  migrate:
+    <<: *app
+    restart: "no"
+    environment:
+      <<: *app-env
+      DATABASE_URL: postgresql://hc_owner:${POSTGRES_PASSWORD}@db:5432/harborcart
+    command: ["python","manage.py","migrate","--noinput"]
+    depends_on:
+      db: {condition: service_healthy}
+  web:
+    <<: *app
+    ports: ["127.0.0.1:8080:8080"]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+    healthcheck:
+      test: ["CMD","python","-c","import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/readyz',timeout=3)"]
+      interval: 10s
+      timeout: 4s
+      retries: 3
+      start_period: 20s
+  worker:
+    <<: *app
+    command: ["python","manage.py","worker","--name","worker-1"]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+    healthcheck:
+      test: ["CMD","python","manage.py","worker_health","--name","worker-1"]
+      interval: 20s
+      timeout: 8s
+      retries: 3
+      start_period: 20s
+  tests:
+    <<: *app
+    profiles: [tests]
+    restart: "no"
+    environment:
+      <<: *app-env
+      HC_ENV: test
+      DATABASE_URL: postgresql://hc_test:${POSTGRES_TEST_PASSWORD}@db:5432/harborcart
+    command: ["python","manage.py","test","commerce.tests","--settings=harbor.settings_test","--verbosity=2","--noinput"]
+    depends_on:
+      db: {condition: service_healthy}
+  prometheus:
+    image: prom/prometheus:v3.13.5
+    profiles: [observability]
+    ports: ["127.0.0.1:9090:9090"]
+    command: ["--config.file=/etc/prometheus/prometheus.yml","--storage.tsdb.retention.time=3d","--storage.tsdb.retention.size=512MB"]
+    volumes:
+      - ./ops/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./ops/prometheus/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - ./.local/metrics-token:/run/secrets/metrics-token:ro
+      - prometheus-data:/prometheus
+    mem_limit: 512m
+    cpus: 0.5
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+    depends_on: [web]
+  grafana:
+    image: grafana/grafana:13.2.4
+    profiles: [observability]
+    ports: ["127.0.0.1:3000:3000"]
+    environment:
+      GF_SECURITY_ADMIN_USER: operator
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:?Run make bootstrap}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./ops/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./ops/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    mem_limit: 384m
+    cpus: 0.5
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+    depends_on: [prometheus]
+volumes:
+  postgres-data:
+  prometheus-data:
+  grafana-data:

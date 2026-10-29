@@ -1,0 +1,38 @@
+groups:
+  - name: harborcart.business
+    rules:
+      - alert: HarborCartScrapeFailed
+        expr: up{job="harborcart"} == 0
+        for: 1m
+        labels: {severity: critical}
+        annotations:
+          summary: "Business metrics cannot be collected"
+          runbook: "docs/runbooks/monitoring.md"
+      - alert: HarborCartWorkerStale
+        expr: harborcart_worker_heartbeat_age_seconds > 90
+        for: 1m
+        labels: {severity: critical}
+        annotations:
+          summary: "No worker has reported a recent heartbeat"
+          runbook: "docs/runbooks/queue.md"
+      - alert: HarborCartQueueDelayed
+        expr: harborcart_queue_oldest_seconds > 120
+        for: 1m
+        labels: {severity: warning}
+        annotations:
+          summary: "An order workflow has unfinished work older than two minutes"
+          runbook: "docs/runbooks/queue.md"
+      - alert: HarborCartDeadLetters
+        expr: harborcart_jobs{status="dead"} > 0
+        for: 1m
+        labels: {severity: critical}
+        annotations:
+          summary: "Background processing exhausted its retry budget"
+          runbook: "docs/runbooks/queue.md"
+      - alert: HarborCartMetricsMissing
+        expr: absent(harborcart_worker_heartbeat_age_seconds)
+        for: 2m
+        labels: {severity: critical}
+        annotations:
+          summary: "Required business metric is absent"
+          runbook: "docs/runbooks/monitoring.md"
