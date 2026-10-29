@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with: {persist-credentials: false}
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with: {python-version: "3.12"}
       - run: python -m pip install --require-hashes -r requirements.lock
       - run: python scripts/preflight.py
@@ -43,7 +43,7 @@ jobs:
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with: {persist-credentials: false}
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with: {python-version: "3.12"}
       - run: python -m pip install --require-hashes -r requirements.lock
       - run: python manage.py test commerce.tests --settings=harbor.settings_test --noinput --verbosity=2
@@ -53,7 +53,7 @@ jobs:
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with: {persist-credentials: false}
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with: {python-version: "3.12"}
       - run: python -m pip install --require-hashes -r requirements-security.lock
       - run: bandit -r commerce harbor scripts -x commerce/tests,harbor/settings_test.py -c bandit.toml
